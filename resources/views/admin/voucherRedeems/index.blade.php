@@ -1,83 +1,88 @@
 @extends('layouts.admin')
 @section('content')
-@can('voucher_redeem_create')
-    <div style="margin-bottom: 10px;" class="row">
-        <div class="col-lg-12">
-            <a class="btn btn-success" href="{{ route('admin.voucher-redeems.create') }}">
-                {{ trans('global.add') }} {{ trans('cruds.voucherRedeem.title_singular') }}
-            </a>
+<div class="content">
+    @can('voucher_redeem_create')
+        <div style="margin-bottom: 10px;" class="row">
+            <div class="col-lg-12">
+                <a class="btn btn-success" href="{{ route('admin.voucher-redeems.create') }}">
+                    {{ trans('global.add') }} {{ trans('cruds.voucherRedeem.title_singular') }}
+                </a>
+            </div>
         </div>
-    </div>
-@endcan
-<div class="card">
-    <div class="card-header">
-        {{ trans('cruds.voucherRedeem.title_singular') }} {{ trans('global.list') }}
-    </div>
+    @endcan
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    {{ trans('cruds.voucherRedeem.title_singular') }} {{ trans('global.list') }}
+                </div>
+                <div class="panel-body">
+                    <div class="table-responsive">
+                        <table class=" table table-bordered table-striped table-hover datatable datatable-VoucherRedeem">
+                            <thead>
+                                <tr>
+                                    <th width="10">
 
-    <div class="card-body">
-        <div class="table-responsive">
-            <table class=" table table-bordered table-striped table-hover datatable datatable-VoucherRedeem">
-                <thead>
-                    <tr>
-                        <th width="10">
+                                    </th>
+                                    <th>
+                                        {{ trans('cruds.voucherRedeem.fields.id') }}
+                                    </th>
+                                    <th>
+                                        {{ trans('cruds.voucherRedeem.fields.voucher') }}
+                                    </th>
+                                    <th>
+                                        &nbsp;
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach($voucherRedeems as $key => $voucherRedeem)
+                                    <tr data-entry-id="{{ $voucherRedeem->id }}">
+                                        <td>
 
-                        </th>
-                        <th>
-                            {{ trans('cruds.voucherRedeem.fields.id') }}
-                        </th>
-                        <th>
-                            {{ trans('cruds.voucherRedeem.fields.voucher') }}
-                        </th>
-                        <th>
-                            &nbsp;
-                        </th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach($voucherRedeems as $key => $voucherRedeem)
-                        <tr data-entry-id="{{ $voucherRedeem->id }}">
-                            <td>
+                                        </td>
+                                        <td>
+                                            {{ $voucherRedeem->id ?? '' }}
+                                        </td>
+                                        <td>
+                                            {{ $voucherRedeem->voucher->guid ?? '' }}
+                                        </td>
+                                        <td>
+                                            @can('voucher_redeem_show')
+                                                <a class="btn btn-xs btn-primary" href="{{ route('admin.voucher-redeems.show', $voucherRedeem->id) }}">
+                                                    {{ trans('global.view') }}
+                                                </a>
+                                            @endcan
 
-                            </td>
-                            <td>
-                                {{ $voucherRedeem->id ?? '' }}
-                            </td>
-                            <td>
-                                {{ $voucherRedeem->voucher->guid ?? '' }}
-                            </td>
-                            <td>
-                                @can('voucher_redeem_show')
-                                    <a class="btn btn-xs btn-primary" href="{{ route('admin.voucher-redeems.show', $voucherRedeem->id) }}">
-                                        {{ trans('global.view') }}
-                                    </a>
-                                @endcan
+                                            @can('voucher_redeem_edit')
+                                                <a class="btn btn-xs btn-info" href="{{ route('admin.voucher-redeems.edit', $voucherRedeem->id) }}">
+                                                    {{ trans('global.edit') }}
+                                                </a>
+                                            @endcan
 
-                                @can('voucher_redeem_edit')
-                                    <a class="btn btn-xs btn-info" href="{{ route('admin.voucher-redeems.edit', $voucherRedeem->id) }}">
-                                        {{ trans('global.edit') }}
-                                    </a>
-                                @endcan
+                                            @can('voucher_redeem_delete')
+                                                <form action="{{ route('admin.voucher-redeems.destroy', $voucherRedeem->id) }}" method="POST" onsubmit="return confirm('{{ trans('global.areYouSure') }}');" style="display: inline-block;">
+                                                    <input type="hidden" name="_method" value="DELETE">
+                                                    <input type="hidden" name="_token" value="{{ csrf_token() }}">
+                                                    <input type="submit" class="btn btn-xs btn-danger" value="{{ trans('global.delete') }}">
+                                                </form>
+                                            @endcan
 
-                                @can('voucher_redeem_delete')
-                                    <form action="{{ route('admin.voucher-redeems.destroy', $voucherRedeem->id) }}" method="POST" onsubmit="return confirm('{{ trans('global.areYouSure') }}');" style="display: inline-block;">
-                                        <input type="hidden" name="_method" value="DELETE">
-                                        <input type="hidden" name="_token" value="{{ csrf_token() }}">
-                                        <input type="submit" class="btn btn-xs btn-danger" value="{{ trans('global.delete') }}">
-                                    </form>
-                                @endcan
+                                        </td>
 
-                            </td>
+                                    </tr>
+                                @endforeach
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
 
-                        </tr>
-                    @endforeach
-                </tbody>
-            </table>
+
+
         </div>
     </div>
 </div>
-
-
-
 @endsection
 @section('scripts')
 @parent

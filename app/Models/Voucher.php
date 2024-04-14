@@ -24,6 +24,11 @@ class Voucher extends Model
         'deleted_at',
     ];
 
+    public const STATUS_SELECT = [
+        '0' => 'Active',
+        '1' => 'Inactive',
+    ];
+
     public const IS_MULTI_USE_SELECT = [
         '0' => 'Single Use',
         '1' => 'Multi Use',
@@ -39,6 +44,7 @@ class Voucher extends Model
         'is_for_group',
         'group_size',
         'commission_type_id',
+        'status',
         'created_at',
         'updated_at',
         'deleted_at',

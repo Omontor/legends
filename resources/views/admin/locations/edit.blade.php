@@ -1,67 +1,64 @@
 @extends('layouts.admin')
 @section('content')
+<div class="content">
 
-<div class="card">
-    <div class="card-header">
-        {{ trans('global.edit') }} {{ trans('cruds.location.title_singular') }}
-    </div>
-
-    <div class="card-body">
-        <form method="POST" action="{{ route("admin.locations.update", [$location->id]) }}" enctype="multipart/form-data">
-            @method('PUT')
-            @csrf
-            <div class="form-group">
-                <label class="required" for="name">{{ trans('cruds.location.fields.name') }}</label>
-                <input class="form-control {{ $errors->has('name') ? 'is-invalid' : '' }}" type="text" name="name" id="name" value="{{ old('name', $location->name) }}" required>
-                @if($errors->has('name'))
-                    <div class="invalid-feedback">
-                        {{ $errors->first('name') }}
-                    </div>
-                @endif
-                <span class="help-block">{{ trans('cruds.location.fields.name_helper') }}</span>
-            </div>
-            <div class="form-group">
-                <label for="image">{{ trans('cruds.location.fields.image') }}</label>
-                <div class="needsclick dropzone {{ $errors->has('image') ? 'is-invalid' : '' }}" id="image-dropzone">
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    {{ trans('global.edit') }} {{ trans('cruds.location.title_singular') }}
                 </div>
-                @if($errors->has('image'))
-                    <div class="invalid-feedback">
-                        {{ $errors->first('image') }}
-                    </div>
-                @endif
-                <span class="help-block">{{ trans('cruds.location.fields.image_helper') }}</span>
+                <div class="panel-body">
+                    <form method="POST" action="{{ route("admin.locations.update", [$location->id]) }}" enctype="multipart/form-data">
+                        @method('PUT')
+                        @csrf
+                        <div class="form-group {{ $errors->has('name') ? 'has-error' : '' }}">
+                            <label class="required" for="name">{{ trans('cruds.location.fields.name') }}</label>
+                            <input class="form-control" type="text" name="name" id="name" value="{{ old('name', $location->name) }}" required>
+                            @if($errors->has('name'))
+                                <span class="help-block" role="alert">{{ $errors->first('name') }}</span>
+                            @endif
+                            <span class="help-block">{{ trans('cruds.location.fields.name_helper') }}</span>
+                        </div>
+                        <div class="form-group {{ $errors->has('image') ? 'has-error' : '' }}">
+                            <label for="image">{{ trans('cruds.location.fields.image') }}</label>
+                            <div class="needsclick dropzone" id="image-dropzone">
+                            </div>
+                            @if($errors->has('image'))
+                                <span class="help-block" role="alert">{{ $errors->first('image') }}</span>
+                            @endif
+                            <span class="help-block">{{ trans('cruds.location.fields.image_helper') }}</span>
+                        </div>
+                        <div class="form-group {{ $errors->has('lat') ? 'has-error' : '' }}">
+                            <label for="lat">{{ trans('cruds.location.fields.lat') }}</label>
+                            <input class="form-control" type="text" name="lat" id="lat" value="{{ old('lat', $location->lat) }}">
+                            @if($errors->has('lat'))
+                                <span class="help-block" role="alert">{{ $errors->first('lat') }}</span>
+                            @endif
+                            <span class="help-block">{{ trans('cruds.location.fields.lat_helper') }}</span>
+                        </div>
+                        <div class="form-group {{ $errors->has('long') ? 'has-error' : '' }}">
+                            <label for="long">{{ trans('cruds.location.fields.long') }}</label>
+                            <input class="form-control" type="text" name="long" id="long" value="{{ old('long', $location->long) }}">
+                            @if($errors->has('long'))
+                                <span class="help-block" role="alert">{{ $errors->first('long') }}</span>
+                            @endif
+                            <span class="help-block">{{ trans('cruds.location.fields.long_helper') }}</span>
+                        </div>
+                        <div class="form-group">
+                            <button class="btn btn-danger" type="submit">
+                                {{ trans('global.save') }}
+                            </button>
+                        </div>
+                    </form>
+                </div>
             </div>
-            <div class="form-group">
-                <label for="lat">{{ trans('cruds.location.fields.lat') }}</label>
-                <input class="form-control {{ $errors->has('lat') ? 'is-invalid' : '' }}" type="text" name="lat" id="lat" value="{{ old('lat', $location->lat) }}">
-                @if($errors->has('lat'))
-                    <div class="invalid-feedback">
-                        {{ $errors->first('lat') }}
-                    </div>
-                @endif
-                <span class="help-block">{{ trans('cruds.location.fields.lat_helper') }}</span>
-            </div>
-            <div class="form-group">
-                <label for="long">{{ trans('cruds.location.fields.long') }}</label>
-                <input class="form-control {{ $errors->has('long') ? 'is-invalid' : '' }}" type="text" name="long" id="long" value="{{ old('long', $location->long) }}">
-                @if($errors->has('long'))
-                    <div class="invalid-feedback">
-                        {{ $errors->first('long') }}
-                    </div>
-                @endif
-                <span class="help-block">{{ trans('cruds.location.fields.long_helper') }}</span>
-            </div>
-            <div class="form-group">
-                <button class="btn btn-danger" type="submit">
-                    {{ trans('global.save') }}
-                </button>
-            </div>
-        </form>
+
+
+
+        </div>
     </div>
 </div>
-
-
-
 @endsection
 
 @section('scripts')

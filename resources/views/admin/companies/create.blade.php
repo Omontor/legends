@@ -1,99 +1,90 @@
 @extends('layouts.admin')
 @section('content')
+<div class="content">
 
-<div class="card">
-    <div class="card-header">
-        {{ trans('global.create') }} {{ trans('cruds.company.title_singular') }}
-    </div>
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    {{ trans('global.create') }} {{ trans('cruds.company.title_singular') }}
+                </div>
+                <div class="panel-body">
+                    <form method="POST" action="{{ route("admin.companies.store") }}" enctype="multipart/form-data">
+                        @csrf
+                        <div class="form-group {{ $errors->has('name') ? 'has-error' : '' }}">
+                            <label for="name">{{ trans('cruds.company.fields.name') }}</label>
+                            <input class="form-control" type="text" name="name" id="name" value="{{ old('name', '') }}">
+                            @if($errors->has('name'))
+                                <span class="help-block" role="alert">{{ $errors->first('name') }}</span>
+                            @endif
+                            <span class="help-block">{{ trans('cruds.company.fields.name_helper') }}</span>
+                        </div>
+                        <div class="form-group {{ $errors->has('logo_color') ? 'has-error' : '' }}">
+                            <label for="logo_color">{{ trans('cruds.company.fields.logo_color') }}</label>
+                            <div class="needsclick dropzone" id="logo_color-dropzone">
+                            </div>
+                            @if($errors->has('logo_color'))
+                                <span class="help-block" role="alert">{{ $errors->first('logo_color') }}</span>
+                            @endif
+                            <span class="help-block">{{ trans('cruds.company.fields.logo_color_helper') }}</span>
+                        </div>
+                        <div class="form-group {{ $errors->has('logo_white') ? 'has-error' : '' }}">
+                            <label for="logo_white">{{ trans('cruds.company.fields.logo_white') }}</label>
+                            <div class="needsclick dropzone" id="logo_white-dropzone">
+                            </div>
+                            @if($errors->has('logo_white'))
+                                <span class="help-block" role="alert">{{ $errors->first('logo_white') }}</span>
+                            @endif
+                            <span class="help-block">{{ trans('cruds.company.fields.logo_white_helper') }}</span>
+                        </div>
+                        <div class="form-group {{ $errors->has('icon') ? 'has-error' : '' }}">
+                            <label for="icon">{{ trans('cruds.company.fields.icon') }}</label>
+                            <div class="needsclick dropzone" id="icon-dropzone">
+                            </div>
+                            @if($errors->has('icon'))
+                                <span class="help-block" role="alert">{{ $errors->first('icon') }}</span>
+                            @endif
+                            <span class="help-block">{{ trans('cruds.company.fields.icon_helper') }}</span>
+                        </div>
+                        <div class="form-group {{ $errors->has('favicon') ? 'has-error' : '' }}">
+                            <label for="favicon">{{ trans('cruds.company.fields.favicon') }}</label>
+                            <div class="needsclick dropzone" id="favicon-dropzone">
+                            </div>
+                            @if($errors->has('favicon'))
+                                <span class="help-block" role="alert">{{ $errors->first('favicon') }}</span>
+                            @endif
+                            <span class="help-block">{{ trans('cruds.company.fields.favicon_helper') }}</span>
+                        </div>
+                        <div class="form-group {{ $errors->has('primary_color') ? 'has-error' : '' }}">
+                            <label for="primary_color">{{ trans('cruds.company.fields.primary_color') }}</label>
+                            <input class="form-control" type="text" name="primary_color" id="primary_color" value="{{ old('primary_color', '') }}">
+                            @if($errors->has('primary_color'))
+                                <span class="help-block" role="alert">{{ $errors->first('primary_color') }}</span>
+                            @endif
+                            <span class="help-block">{{ trans('cruds.company.fields.primary_color_helper') }}</span>
+                        </div>
+                        <div class="form-group {{ $errors->has('secondary_color') ? 'has-error' : '' }}">
+                            <label for="secondary_color">{{ trans('cruds.company.fields.secondary_color') }}</label>
+                            <input class="form-control" type="text" name="secondary_color" id="secondary_color" value="{{ old('secondary_color', '') }}">
+                            @if($errors->has('secondary_color'))
+                                <span class="help-block" role="alert">{{ $errors->first('secondary_color') }}</span>
+                            @endif
+                            <span class="help-block">{{ trans('cruds.company.fields.secondary_color_helper') }}</span>
+                        </div>
+                        <div class="form-group">
+                            <button class="btn btn-danger" type="submit">
+                                {{ trans('global.save') }}
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
 
-    <div class="card-body">
-        <form method="POST" action="{{ route("admin.companies.store") }}" enctype="multipart/form-data">
-            @csrf
-            <div class="form-group">
-                <label for="name">{{ trans('cruds.company.fields.name') }}</label>
-                <input class="form-control {{ $errors->has('name') ? 'is-invalid' : '' }}" type="text" name="name" id="name" value="{{ old('name', '') }}">
-                @if($errors->has('name'))
-                    <div class="invalid-feedback">
-                        {{ $errors->first('name') }}
-                    </div>
-                @endif
-                <span class="help-block">{{ trans('cruds.company.fields.name_helper') }}</span>
-            </div>
-            <div class="form-group">
-                <label for="logo_color">{{ trans('cruds.company.fields.logo_color') }}</label>
-                <div class="needsclick dropzone {{ $errors->has('logo_color') ? 'is-invalid' : '' }}" id="logo_color-dropzone">
-                </div>
-                @if($errors->has('logo_color'))
-                    <div class="invalid-feedback">
-                        {{ $errors->first('logo_color') }}
-                    </div>
-                @endif
-                <span class="help-block">{{ trans('cruds.company.fields.logo_color_helper') }}</span>
-            </div>
-            <div class="form-group">
-                <label for="logo_white">{{ trans('cruds.company.fields.logo_white') }}</label>
-                <div class="needsclick dropzone {{ $errors->has('logo_white') ? 'is-invalid' : '' }}" id="logo_white-dropzone">
-                </div>
-                @if($errors->has('logo_white'))
-                    <div class="invalid-feedback">
-                        {{ $errors->first('logo_white') }}
-                    </div>
-                @endif
-                <span class="help-block">{{ trans('cruds.company.fields.logo_white_helper') }}</span>
-            </div>
-            <div class="form-group">
-                <label for="icon">{{ trans('cruds.company.fields.icon') }}</label>
-                <div class="needsclick dropzone {{ $errors->has('icon') ? 'is-invalid' : '' }}" id="icon-dropzone">
-                </div>
-                @if($errors->has('icon'))
-                    <div class="invalid-feedback">
-                        {{ $errors->first('icon') }}
-                    </div>
-                @endif
-                <span class="help-block">{{ trans('cruds.company.fields.icon_helper') }}</span>
-            </div>
-            <div class="form-group">
-                <label for="favicon">{{ trans('cruds.company.fields.favicon') }}</label>
-                <div class="needsclick dropzone {{ $errors->has('favicon') ? 'is-invalid' : '' }}" id="favicon-dropzone">
-                </div>
-                @if($errors->has('favicon'))
-                    <div class="invalid-feedback">
-                        {{ $errors->first('favicon') }}
-                    </div>
-                @endif
-                <span class="help-block">{{ trans('cruds.company.fields.favicon_helper') }}</span>
-            </div>
-            <div class="form-group">
-                <label for="primary_color">{{ trans('cruds.company.fields.primary_color') }}</label>
-                <input class="form-control {{ $errors->has('primary_color') ? 'is-invalid' : '' }}" type="text" name="primary_color" id="primary_color" value="{{ old('primary_color', '') }}">
-                @if($errors->has('primary_color'))
-                    <div class="invalid-feedback">
-                        {{ $errors->first('primary_color') }}
-                    </div>
-                @endif
-                <span class="help-block">{{ trans('cruds.company.fields.primary_color_helper') }}</span>
-            </div>
-            <div class="form-group">
-                <label for="secondary_color">{{ trans('cruds.company.fields.secondary_color') }}</label>
-                <input class="form-control {{ $errors->has('secondary_color') ? 'is-invalid' : '' }}" type="text" name="secondary_color" id="secondary_color" value="{{ old('secondary_color', '') }}">
-                @if($errors->has('secondary_color'))
-                    <div class="invalid-feedback">
-                        {{ $errors->first('secondary_color') }}
-                    </div>
-                @endif
-                <span class="help-block">{{ trans('cruds.company.fields.secondary_color_helper') }}</span>
-            </div>
-            <div class="form-group">
-                <button class="btn btn-danger" type="submit">
-                    {{ trans('global.save') }}
-                </button>
-            </div>
-        </form>
+
+
+        </div>
     </div>
 </div>
-
-
-
 @endsection
 
 @section('scripts')

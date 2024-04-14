@@ -227,6 +227,8 @@ return [
             'deleted_at_helper'      => ' ',
             'commission_type'        => 'Commission Type',
             'commission_type_helper' => ' ',
+            'status'                 => 'Status',
+            'status_helper'          => ' ',
         ],
     ],
     'partnerUser' => [

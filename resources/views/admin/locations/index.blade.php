@@ -1,109 +1,114 @@
 @extends('layouts.admin')
 @section('content')
-@can('location_create')
-    <div style="margin-bottom: 10px;" class="row">
-        <div class="col-lg-12">
-            <a class="btn btn-success" href="{{ route('admin.locations.create') }}">
-                {{ trans('global.add') }} {{ trans('cruds.location.title_singular') }}
-            </a>
-            <button class="btn btn-warning" data-toggle="modal" data-target="#csvImportModal">
-                {{ trans('global.app_csvImport') }}
-            </button>
-            @include('csvImport.modal', ['model' => 'Location', 'route' => 'admin.locations.parseCsvImport'])
+<div class="content">
+    @can('location_create')
+        <div style="margin-bottom: 10px;" class="row">
+            <div class="col-lg-12">
+                <a class="btn btn-success" href="{{ route('admin.locations.create') }}">
+                    {{ trans('global.add') }} {{ trans('cruds.location.title_singular') }}
+                </a>
+                <button class="btn btn-warning" data-toggle="modal" data-target="#csvImportModal">
+                    {{ trans('global.app_csvImport') }}
+                </button>
+                @include('csvImport.modal', ['model' => 'Location', 'route' => 'admin.locations.parseCsvImport'])
+            </div>
         </div>
-    </div>
-@endcan
-<div class="card">
-    <div class="card-header">
-        {{ trans('cruds.location.title_singular') }} {{ trans('global.list') }}
-    </div>
+    @endcan
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    {{ trans('cruds.location.title_singular') }} {{ trans('global.list') }}
+                </div>
+                <div class="panel-body">
+                    <div class="table-responsive">
+                        <table class=" table table-bordered table-striped table-hover datatable datatable-Location">
+                            <thead>
+                                <tr>
+                                    <th width="10">
 
-    <div class="card-body">
-        <div class="table-responsive">
-            <table class=" table table-bordered table-striped table-hover datatable datatable-Location">
-                <thead>
-                    <tr>
-                        <th width="10">
+                                    </th>
+                                    <th>
+                                        {{ trans('cruds.location.fields.id') }}
+                                    </th>
+                                    <th>
+                                        {{ trans('cruds.location.fields.name') }}
+                                    </th>
+                                    <th>
+                                        {{ trans('cruds.location.fields.image') }}
+                                    </th>
+                                    <th>
+                                        {{ trans('cruds.location.fields.lat') }}
+                                    </th>
+                                    <th>
+                                        {{ trans('cruds.location.fields.long') }}
+                                    </th>
+                                    <th>
+                                        &nbsp;
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach($locations as $key => $location)
+                                    <tr data-entry-id="{{ $location->id }}">
+                                        <td>
 
-                        </th>
-                        <th>
-                            {{ trans('cruds.location.fields.id') }}
-                        </th>
-                        <th>
-                            {{ trans('cruds.location.fields.name') }}
-                        </th>
-                        <th>
-                            {{ trans('cruds.location.fields.image') }}
-                        </th>
-                        <th>
-                            {{ trans('cruds.location.fields.lat') }}
-                        </th>
-                        <th>
-                            {{ trans('cruds.location.fields.long') }}
-                        </th>
-                        <th>
-                            &nbsp;
-                        </th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach($locations as $key => $location)
-                        <tr data-entry-id="{{ $location->id }}">
-                            <td>
+                                        </td>
+                                        <td>
+                                            {{ $location->id ?? '' }}
+                                        </td>
+                                        <td>
+                                            {{ $location->name ?? '' }}
+                                        </td>
+                                        <td>
+                                            @if($location->image)
+                                                <a href="{{ $location->image->getUrl() }}" target="_blank" style="display: inline-block">
+                                                    <img src="{{ $location->image->getUrl('thumb') }}">
+                                                </a>
+                                            @endif
+                                        </td>
+                                        <td>
+                                            {{ $location->lat ?? '' }}
+                                        </td>
+                                        <td>
+                                            {{ $location->long ?? '' }}
+                                        </td>
+                                        <td>
+                                            @can('location_show')
+                                                <a class="btn btn-xs btn-primary" href="{{ route('admin.locations.show', $location->id) }}">
+                                                    {{ trans('global.view') }}
+                                                </a>
+                                            @endcan
 
-                            </td>
-                            <td>
-                                {{ $location->id ?? '' }}
-                            </td>
-                            <td>
-                                {{ $location->name ?? '' }}
-                            </td>
-                            <td>
-                                @if($location->image)
-                                    <a href="{{ $location->image->getUrl() }}" target="_blank" style="display: inline-block">
-                                        <img src="{{ $location->image->getUrl('thumb') }}">
-                                    </a>
-                                @endif
-                            </td>
-                            <td>
-                                {{ $location->lat ?? '' }}
-                            </td>
-                            <td>
-                                {{ $location->long ?? '' }}
-                            </td>
-                            <td>
-                                @can('location_show')
-                                    <a class="btn btn-xs btn-primary" href="{{ route('admin.locations.show', $location->id) }}">
-                                        {{ trans('global.view') }}
-                                    </a>
-                                @endcan
+                                            @can('location_edit')
+                                                <a class="btn btn-xs btn-info" href="{{ route('admin.locations.edit', $location->id) }}">
+                                                    {{ trans('global.edit') }}
+                                                </a>
+                                            @endcan
 
-                                @can('location_edit')
-                                    <a class="btn btn-xs btn-info" href="{{ route('admin.locations.edit', $location->id) }}">
-                                        {{ trans('global.edit') }}
-                                    </a>
-                                @endcan
+                                            @can('location_delete')
+                                                <form action="{{ route('admin.locations.destroy', $location->id) }}" method="POST" onsubmit="return confirm('{{ trans('global.areYouSure') }}');" style="display: inline-block;">
+                                                    <input type="hidden" name="_method" value="DELETE">
+                                                    <input type="hidden" name="_token" value="{{ csrf_token() }}">
+                                                    <input type="submit" class="btn btn-xs btn-danger" value="{{ trans('global.delete') }}">
+                                                </form>
+                                            @endcan
 
-                                @can('location_delete')
-                                    <form action="{{ route('admin.locations.destroy', $location->id) }}" method="POST" onsubmit="return confirm('{{ trans('global.areYouSure') }}');" style="display: inline-block;">
-                                        <input type="hidden" name="_method" value="DELETE">
-                                        <input type="hidden" name="_token" value="{{ csrf_token() }}">
-                                        <input type="submit" class="btn btn-xs btn-danger" value="{{ trans('global.delete') }}">
-                                    </form>
-                                @endcan
+                                        </td>
 
-                            </td>
+                                    </tr>
+                                @endforeach
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
 
-                        </tr>
-                    @endforeach
-                </tbody>
-            </table>
+
+
         </div>
     </div>
 </div>
-
-
-
 @endsection
 @section('scripts')
 @parent

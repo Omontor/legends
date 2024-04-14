@@ -18,6 +18,7 @@ class CreateVouchersTable extends Migration
             $table->string('is_multi_use');
             $table->string('is_for_group')->nullable();
             $table->integer('group_size')->nullable();
+            $table->string('status')->nullable();
             $table->timestamps();
             $table->softDeletes();
         });
